@@ -15,6 +15,7 @@ MODEL_INCEPTION_V3 = 'inception_v3'
 MODEL_RESNET50 = 'resnet50'
 MODEL_RESNET152 = 'resnet152'
 MODEL_XCEPTION = 'xception'
+MODEL_ANTNET = 'antnet'
 MODEL_NASNET = 'nasnet'
 MODEL_MOBILEV1 = 'mobilev1'
 model = MODEL_RESNET50

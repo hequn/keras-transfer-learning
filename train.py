@@ -16,6 +16,7 @@ def parse_args():
         config.MODEL_RESNET50,
         config.MODEL_XCEPTION,
         config.MODEL_RESNET152,
+        config.MODEL_ANTNET,
         config.MODEL_NASNET,
         config.MODEL_INCEPTION_V3,
         config.MODEL_VGG16,
