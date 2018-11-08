@@ -14,6 +14,7 @@ import util
 
 
 class BaseModel(object):
+    """All of the methods can be extended in the sub class. Be cautious about your model."""
     def __init__(self,
                  class_weight=None,
                  nb_epoch=1000,
@@ -38,6 +39,7 @@ class BaseModel(object):
             optimizer=Adam(lr=1e-5),
             metrics=['accuracy'])
         self.model.summary()
+        # save the model to png in order to visualize
         plot_model(self.model, to_file='model1.png', show_shapes=True)
         train_data = self.get_train_datagen(rotation_range=30., shear_range=0.2, zoom_range=0.2, horizontal_flip=True,
                                             preprocessing_function=self.preprocess_input)
@@ -71,8 +73,8 @@ class BaseModel(object):
         # self.model.load_weights(config.get_fine_tuned_weights_path(), by_name=True, skip_mismatch=True)
         print("Model is created")
         print("Fine tuning...")
-        self._fine_tuning()
         self.save_classes()
+        self._fine_tuning()
         print("Classes are saved")
 
     # add the default preprocess function in tf mode
@@ -100,9 +102,9 @@ class BaseModel(object):
 
     def get_input_tensor(self):
         if util.get_keras_backend_name() == 'theano':
-            return Input(shape=(3,) + self.img_size)
+            return Input(shape=(1,) + self.img_size)
         else:
-            return Input(shape=self.img_size + (3,))
+            return Input(shape=self.img_size + (1,))
 
     @staticmethod
     def make_net_layers_non_trainable(model):
