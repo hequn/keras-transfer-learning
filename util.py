@@ -155,8 +155,20 @@ def override_keras_directory_iterator_next():
 
     def custom_next(self):
         batch_x, batch_y = original_next(self)
-        batch_x = batch_x[:, ::-1, :, :]
+        # we must be sure the channel first or channel last to reorder
+        # for tensorflow it is the channel last
+        batch_x = batch_x[:, :, :, ::-1]
         return batch_x, batch_y
+        # If you want to visualize the images to see the channel flip
+        # batch_x = np.array((batch_x / 2. + 0.5) * 255, dtype=np.int32)
+        # plt.subplot(121)
+        # plt.imshow(batch_x[0])
+        # plt.title("Original1")
+        # batch_x = batch_x[:, ::, :, ::-1]
+        # plt.subplot(122)
+        # plt.imshow(batch_x[0])
+        # plt.title("Original2")
+        # plt.show()
 
     DirectoryIterator.next = custom_next
 

@@ -30,6 +30,7 @@ def parse_args():
 def init():
     util.lock()
     util.set_img_format()
+    # Pay extremely attention to the RGB->BGR, the next method is override.
     util.override_keras_directory_iterator_next()
     util.set_classes_from_train_dir()
     util.set_samples_info()
