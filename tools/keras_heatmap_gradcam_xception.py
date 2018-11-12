@@ -106,15 +106,21 @@ def _compute_gradients(tensor, var_list):
 
 def grad_cam(input_model, image, category_index, layer_name):
     nb_classes = 360
-    target_layer = lambda x: target_category_loss(x, category_index, nb_classes)
-    x = Lambda(target_layer, output_shape = target_category_loss_output_shape)(input_model.output[0])
-    model = Model(inputs=input_model.input, outputs=x)
+    '''
+    I want to see the global_avg_pooling and the output vector directly but not the category_index one
+    because our model is not connected the conv to the softmax
+    -7 is the global_avg_pooling layer
+    '''
+    target_layer = input_model.layers[-7].output#lambda x: target_category_loss(x, category_index, nb_classes)
+    #x = Lambda(target_layer, output_shape = target_category_loss_output_shape)(input_model.layers[132].output) #input_model.output[0]
+    model = Model(inputs=input_model.input, outputs=target_layer)
     loss = K.sum(model.layers[-1].output)
     # conv_output = [l for l in model.layers[0].layers if l.name is layer_name][0].output
     conv_output = [l for l in model.layers if l.name is layer_name][0].output
     grads = normalize(K.gradients(loss, conv_output)[0]) # normalize(_compute_gradients(loss, [conv_output])[0])
     gradient_function = K.function([model.layers[0].input], [conv_output, grads])
 
+    #7*7*2048 shape output and 2048 shape grads_val
     output, grads_val = gradient_function([image])
     output, grads_val = output[0, :], grads_val[0, :, :, :]
 
@@ -123,7 +129,7 @@ def grad_cam(input_model, image, category_index, layer_name):
 
     for i, w in enumerate(weights):
         cam += w * output[:, :, i]
-
+    # here we got the 7*7 filter for xception mattered with the 2048 output vector for -7 layer
     cam = cv2.resize(cam, (224, 224))
     cam = np.maximum(cam, 0)
     heatmap = cam / np.max(cam)
