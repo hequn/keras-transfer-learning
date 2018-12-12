@@ -33,7 +33,7 @@ tf.train.write_graph(sess.graph_def, 'pbsave', 'graph.pbtxt')
 # --input_binary=false   \
 # --output_graph=pbsave/frozen_test.pb    \
 # --output_node_names=classify_dense/Softmax,embedding_1/embedding_lookup
-# freeze_graph    --input_graph=pbsave/graph.pbtxt    --input_checkpoint=pbsave/model.ckpt   --input_binary=false   --output_graph=pbsave/frozen_test.pb    --output_node_names=classify_dense/Softmax,embedding_1/embedding_lookup
+# freeze_graph    --input_graph=pbsave/graph.pbtxt    --input_checkpoint=pbsave/model.ckpt   --input_binary=false   --output_graph=pbsave/frozen_test.pb    --output_node_names=classify_dense/Softmax,embedding/Elu:0 #,embedding_1/embedding_lookup
 
 # # 33333333333333333333333333333333333333
 # # then the below codes help us to export the tflite

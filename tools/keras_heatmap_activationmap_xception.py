@@ -59,11 +59,15 @@ def visualize_class_activation_map(model_input, image, target_class, lay_name):
     cv2.waitKey(10000)
 
 
-# To be able to create a CAM, the network architecture is restricted to have a global average pooling layer after the
-#  final convolutional layer, and then a linear (dense) layer. Unfortunately this means we can’t apply this technique
-#  on existing networks that don’t have this structure. What we can do is modify existing networks and fine tune them
-#  to get this. Designing network architectures to support tricks like CAM is like writing code in a way that makes
-# it easier to debug.
+'''
+To be able to create a CAM, the network architecture is restricted to have a global average pooling layer after the
+ final convolutional layer, and then a linear (dense) layer. Unfortunately this means we can't apply this technique
+ on existing networks that don't have this structure. What we can do is modify existing networks and fine tune them
+ to get this. Designing network architectures to support tricks like CAM is like writing code in a way that makes
+it easier to debug.
+
+But I can see the whole vector(global avg) after the last conv layer, so we can use the 2048 and 7*7*2048 vector to see the heapmap.
+'''
 preprocessed_input = load_image(r'C:/Users/Ctbri/Desktop/110087_2_2_151819165.jpg', color_mode='grayscale')
 # reverse the image for the pre model is trained like so
 preprocessed_input = preprocessed_input[:, ::-1, :, :]

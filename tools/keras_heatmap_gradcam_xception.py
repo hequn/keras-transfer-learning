@@ -147,6 +147,8 @@ def grad_cam(input_model, image, category_index, layer_name):
     return np.uint8(cam), heatmap
 
 preprocessed_input = load_image(r'C:/Users/Ctbri/Desktop/110087_2_2_151819165.jpg', color_mode='grayscale')
+# when training, the second index was revert, so we add the -1. But it's a wrong operation in RGB channel last mode.
+# because we intended to turn RGB to BGR but not revert the image.
 preprocessed_input = preprocessed_input[:, ::-1, :, :]
 import util
 import config

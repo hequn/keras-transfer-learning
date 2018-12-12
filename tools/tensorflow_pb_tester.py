@@ -35,6 +35,9 @@ sess.run(tf.global_variables_initializer())
 input1 = sess.graph.get_tensor_by_name('input_1:0')
 input2 = sess.graph.get_tensor_by_name("input_2:0")
 classify_dense = sess.graph.get_tensor_by_name("classify_dense/Softmax:0")
+# noticed: center loss version will have the embedding_1/embedding_lookup:0 as the center vector according to the label,
+# and embedding/Elu:0 as the image feature
+# triplet loss version will have it as the image feature vector;
 embedding_1 = sess.graph.get_tensor_by_name("embedding_1/embedding_lookup:0")
 
 def load_image_into_numpy_array(image, im_width, im_height, input_type):
@@ -42,7 +45,7 @@ def load_image_into_numpy_array(image, im_width, im_height, input_type):
         (im_height, im_width, 3)).astype(input_type)
 
 # load the image and resize to fixed size, together preprocess it
-img = Image.open('pbsave/test.jpg')
+img = Image.open('pbsave/test_class_101217_1.jpg')
 img = img.resize((224,224))
 input_data = load_image_into_numpy_array(img, 224, 224, np.float32)
 
