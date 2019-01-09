@@ -278,13 +278,13 @@ def triplet_transformed_generator(generator, embedding_size):
 
 
 def centerloss_transformed_generator(generator):
-    """The data generator drive for the centor loss model specially."""
+    """The data generator drive for the center loss model specially."""
     while True:
         # get the transformed batch images
         data = next(generator)
         # get the class index from the categorical formatted np array
         batch_class_index = data[1].argmax(axis=-1).reshape(data[1].shape[0],)
-        # reformatted the output shapes to fit the losses for centor loss
+        # reformatted the output shapes to fit the losses for center loss
         x = [data[0], batch_class_index]
         y = [data[1], np.random.rand(data[1].shape[0],)]
         yield x, y
